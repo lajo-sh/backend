@@ -6,6 +6,7 @@ import {
   varchar,
   text,
   timestamp,
+  real,
 } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
@@ -28,6 +29,7 @@ export const domains = pgTable("domains", {
   domain: varchar().unique().notNull(),
   isPhishing: boolean().notNull(),
   explanation: text().notNull(),
+  confidence: real().notNull(),
 });
 
 export const blockedPhishingEvents = pgTable("blocked_phishing_events", {

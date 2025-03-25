@@ -1,8 +1,8 @@
 import type { FastifyInstance } from "fastify";
 import { db } from "../lib/db/db";
-import { users, trustedUsers, blockedPhishingEvents } from "../lib/db/schema";
+import { users, trustedUsers } from "../lib/db/schema";
 import type { ZodTypeProvider } from "fastify-type-provider-zod";
-import { eq, and, count } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import { z } from "zod";
 import bcrypt from "bcrypt";
 import { redis } from "../lib/redis";
@@ -40,6 +40,7 @@ const UpdateUserSchema = z
 const UserResponseSchema = z.object({
   valid: z.boolean(),
   user: z.object({
+    id: z.number(),
     email: z.string().email(),
     fullName: z.string().nullable(),
     blockedWebsites: z.number().optional(),
@@ -66,15 +67,16 @@ const MeResponse = z.object({
     .object({
       id: z.number(),
       email: z.string(),
-      name: z.string(),
-      deviceToken: z.string().nullable(),
-      trustedUsers: z.array(
-        z.object({
-          id: z.number(),
-          email: z.string(),
-          name: z.string(),
-        }),
-      ),
+      fullName: z.string(),
+      trustedUsers: z
+        .array(
+          z.object({
+            id: z.number(),
+            email: z.string(),
+            name: z.string(),
+          }),
+        )
+        .optional(),
     })
     .optional(),
 });
@@ -98,6 +100,7 @@ async function routes(fastify: FastifyInstance) {
         return {
           valid: true,
           user: {
+            id: request.user.id,
             email: request.user.email,
             fullName: request.user.fullName,
           },
@@ -141,6 +144,7 @@ async function routes(fastify: FastifyInstance) {
       return {
         valid: true,
         user: {
+          id: request.user.id,
           email: request.user.email,
           fullName: request.user.fullName,
         },
@@ -152,49 +156,13 @@ async function routes(fastify: FastifyInstance) {
     "/auth/me",
     {
       preHandler: fastify.auth([fastify.authenticateHandler]),
-      schema: {
-        response: {
-          200: UserResponseSchema,
-        },
-      },
+      schema: {},
     },
     async (request) => {
-      let data = {};
-
-      if (typeof request.body !== "object" || !request.body) {
-        return {
-          valid: true,
-          user: {
-            email: request.user.email,
-            fullName: request.user.fullName,
-          },
-        };
-      }
-
-      if ("fullName" in request.body) {
-        data = {
-          ...data,
-          fullName: request.body.fullName,
-        };
-      }
-
-      if ("email" in request.body) {
-        data = {
-          ...data,
-          email: request.body.email,
-        };
-      }
-
-      await db
-        .update(users)
-        .set({
-          ...data,
-        })
-        .where(eq(users.id, request.user.id));
-
       return {
         valid: true,
         user: {
+          id: request.user.id,
           email: request.user.email,
           fullName: request.user.fullName,
         },

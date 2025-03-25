@@ -1,9 +1,8 @@
 import autoload from "@fastify/autoload";
-import Fastify, { type FastifyReply, type FastifyRequest } from "fastify";
+import Fastify, { type FastifyReply } from "fastify";
 import {
   serializerCompiler,
   validatorCompiler,
-  ZodTypeProvider,
   jsonSchemaTransform,
 } from "fastify-type-provider-zod";
 
@@ -13,7 +12,7 @@ import swagger from "@fastify/swagger";
 import scalar from "@scalar/fastify-api-reference";
 
 import { logger } from "./lib/log";
-import { authenticateHandler, checkSession, type UserType } from "./lib/auth";
+import { authenticateHandler, type UserType } from "./lib/auth";
 
 declare module "fastify" {
   interface FastifyRequest {
@@ -61,7 +60,7 @@ if (!PRODUCTION) {
 fastify.setValidatorCompiler(validatorCompiler);
 fastify.setSerializerCompiler(serializerCompiler);
 
-fastify.addHook("onRequest", (request, reply, done) => {
+fastify.addHook("onRequest", (request, _, done) => {
   request.log.info(
     {
       url: request.url,
@@ -73,7 +72,7 @@ fastify.addHook("onRequest", (request, reply, done) => {
   done();
 });
 
-fastify.addHook("onError", (request, reply, error, done) => {
+fastify.addHook("onError", (request, _, error, done) => {
   request.log.error(
     {
       url: request.url,

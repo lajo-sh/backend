@@ -19,12 +19,14 @@ const CheckPhishingResponse = z.object({
   code: z.string().optional(),
   explanation: z.string().optional(),
   visitedBefore: z.boolean().optional(),
+  confidence: z.number().optional(),
 });
 
 const SubmitPhishingRequest = z.object({
   url: z.string().nonempty("URL must not be empty"),
   isPhishing: z.boolean(),
   explanation: z.string().optional(),
+  confidence: z.number(),
 });
 
 const SubmitPhishingResponse = z.object({
@@ -119,6 +121,9 @@ async function routes(fastify: FastifyInstance) {
               success: true,
               isPhishing,
               code: responseCode,
+              confidence: cachedResult.confidence,
+              explanation: cachedResult.explanation,
+              visitedBefore: true,
             };
           } catch (e) {
             return { success: false, error: "Invalid cache data" };
@@ -144,7 +149,12 @@ async function routes(fastify: FastifyInstance) {
             },
           );
 
-          return { success: true, isPhishing: false, visitedBefore: false };
+          return {
+            success: true,
+            isPhishing: false,
+            visitedBefore: false,
+            confidence: 0,
+          };
         }
 
         const isPhishing = domainInDb.isPhishing;
@@ -154,6 +164,8 @@ async function routes(fastify: FastifyInstance) {
           CACHE_KEY,
           JSON.stringify({
             isPhishing,
+            explanation,
+            confidence: domainInDb.confidence,
           }),
           "EX",
           60 * 60 * 24,
@@ -195,6 +207,7 @@ async function routes(fastify: FastifyInstance) {
           code: responseCode,
           visitedBefore: true,
           explanation,
+          confidence: domainInDb.confidence,
         };
       } catch (error) {
         return { success: false, error: "Failed to check URL" };
@@ -222,7 +235,7 @@ async function routes(fastify: FastifyInstance) {
         };
       }
 
-      const { url, isPhishing, explanation } = request.body;
+      const { url, isPhishing, explanation, confidence } = request.body;
       const domain = normalize(url);
 
       try {
@@ -239,19 +252,24 @@ async function routes(fastify: FastifyInstance) {
           domain,
           isPhishing,
           explanation: explanation ?? "",
+          confidence,
         });
 
         const CACHE_KEY = `phishing:url:${url}`;
         const cacheData = {
           isPhishing,
           explanation,
+          confidence,
         };
         await redis.set(CACHE_KEY, JSON.stringify(cacheData), "EX", 3600);
 
         return { success: true };
       } catch (error) {
         fastify.log.error("Error submitting phishing data:", {
-          error,
+          error:
+            error instanceof Error
+              ? { message: error.message, stack: error.stack }
+              : String(error),
           url,
           isPhishing,
           explanation,
@@ -262,10 +280,16 @@ async function routes(fastify: FastifyInstance) {
           const cacheData = {
             isPhishing,
             explanation,
+            confidence,
           };
           await redis.set(CACHE_KEY, JSON.stringify(cacheData), "EX", 3600);
         } catch (redisError) {
-          fastify.log.error("Redis cache update error:", redisError);
+          fastify.log.error(
+            "Redis cache update error:",
+            redisError instanceof Error
+              ? { message: redisError.message, stack: redisError.stack }
+              : String(redisError),
+          );
         }
 
         return {
