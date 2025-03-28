@@ -1,8 +1,11 @@
+import { describe, test, expect, vi, beforeAll } from "vitest";
 import { checkSession } from "../src/lib/auth";
 
-jest.mock("../src/lib/redis");
+vi.mock("../src/lib/redis");
 
-process.env.REDIS_URL = "redis://localhost:6379";
+beforeAll(() => {
+  process.env.REDIS_URL = "redis://localhost:6379";
+});
 
 describe("auth", () => {
   test("checkSession works with Redis cache", async () => {
