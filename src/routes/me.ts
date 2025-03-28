@@ -38,13 +38,16 @@ const UpdateUserSchema = z
   );
 
 const UserResponseSchema = z.object({
-  valid: z.boolean(),
-  user: z.object({
-    id: z.number(),
-    email: z.string().email(),
-    fullName: z.string().nullable(),
-    blockedWebsites: z.number().optional(),
-  }),
+  valid: z.boolean().optional(),
+  user: z
+    .object({
+      id: z.number().optional(),
+      email: z.string().email().optional(),
+      fullName: z.string().optional(),
+      blockedWebsites: z.number().optional(),
+    })
+    .optional(),
+  error: z.string().optional(),
 });
 
 const TrustedUserRequestSchema = z.object({
@@ -156,7 +159,11 @@ async function routes(fastify: FastifyInstance) {
     "/auth/me",
     {
       preHandler: fastify.auth([fastify.authenticateHandler]),
-      schema: {},
+      schema: {
+        response: {
+          200: UserResponseSchema,
+        },
+      },
     },
     async (request) => {
       return {
@@ -164,7 +171,7 @@ async function routes(fastify: FastifyInstance) {
         user: {
           id: request.user.id,
           email: request.user.email,
-          fullName: request.user.fullName,
+          fullName: request.user.fullName ?? "",
         },
       };
     },
