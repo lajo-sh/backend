@@ -43,7 +43,7 @@ const UserResponseSchema = z.object({
     .object({
       id: z.number().optional(),
       email: z.string().email().optional(),
-      fullName: z.string().optional(),
+      fullName: z.string().optional().nullable(),
       blockedWebsites: z.number().optional(),
     })
     .optional(),
