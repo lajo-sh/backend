@@ -50,12 +50,21 @@ const BlockedPhishingResponse = z.object({
     .optional(),
 });
 
+/**
+ * Generates a six-digit code as a string.
+ */
 function generateSixDigitCode() {
   const randomNumber = Math.floor(Math.random() * 1000000);
 
   return randomNumber.toString().padStart(6, "0");
 }
 
+/**
+ * Normalizes a URL by removing the protocol and trailing slashes.
+ *
+ * @param url - The URL to normalize.
+ * @returns The normalized URL.
+ */
 function normalize(url: string) {
   return url.replace(/(^\w+:|^)\/\//, "").replace(/\/+$/, "");
 }

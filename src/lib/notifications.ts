@@ -10,6 +10,13 @@ const expo = new Expo({
   accessToken: process.env.EXPO_ACCESS_TOKEN,
 });
 
+/**
+ * Sends a push notification to a user's devices.
+ * @param userId The ID of the user to send the notification to.
+ * @param title The title of the notification.
+ * @param body The body of the notification.
+ * @param data Optional data to send with the notification.
+ */
 export async function sendPushNotification(
   userId: number,
   title: string,

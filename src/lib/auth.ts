@@ -5,8 +5,17 @@ import { redis } from "./redis";
 import { eq } from "drizzle-orm";
 import crypto from "node:crypto";
 
+/**
+ * Type representing a user object.
+ */
 export type UserType = typeof users.$inferSelect;
 
+/**
+ * Checks the validity of a session string.
+ *
+ * @param sessionStr - The session string to validate.
+ * @returns An object indicating whether the session is valid and the associated user if valid.
+ */
 export async function checkSession(sessionStr: string) {
   try {
     const CACHE_KEY = `session:${sessionStr}`;
@@ -47,6 +56,12 @@ export async function checkSession(sessionStr: string) {
   }
 }
 
+/**
+ * Creates a new session for a user.
+ *
+ * @param userId - The ID of the user for whom the session is created.
+ * @returns The generated session string.
+ */
 export async function createSession(userId: number) {
   const sessionString = crypto.randomBytes(32).toString("hex");
 
@@ -58,6 +73,11 @@ export async function createSession(userId: number) {
   return sessionString;
 }
 
+/**
+ * Invalidates a session by removing it from the cache.
+ *
+ * @param sessionStr - The session string to invalidate.
+ */
 export async function invalidateSession(sessionStr: string) {
   try {
     await redis.del(`session:${sessionStr}`);
@@ -66,6 +86,13 @@ export async function invalidateSession(sessionStr: string) {
   }
 }
 
+/**
+ * Middleware to authenticate a request based on the session token.
+ *
+ * @param request - The Fastify request object.
+ * @param reply - The Fastify reply object.
+ * @returns A response with a 401 status if authentication fails.
+ */
 export async function authenticateHandler(
   request: FastifyRequest,
   reply: FastifyReply,
