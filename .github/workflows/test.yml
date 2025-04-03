@@ -20,5 +20,8 @@ jobs:
       - name: Install dependencies
         run: pnpm i
 
+      - name: Approve builds
+        run: pnpm approve-builds
+
       - name: Run unit tests
         run: pnpm test
