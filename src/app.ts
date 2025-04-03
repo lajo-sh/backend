@@ -11,6 +11,12 @@ import auth from "@fastify/auth";
 import swagger from "@fastify/swagger";
 import scalar from "@scalar/fastify-api-reference";
 
+import login from "./routes/login";
+import me from "./routes/me";
+import notifications from "./routes/notifications";
+import phishing from "./routes/phishing";
+import signup from "./routes/signup";
+
 import { logger } from "./lib/log";
 import { authenticateHandler, type UserType } from "./lib/auth";
 
@@ -92,10 +98,10 @@ fastify.get("/status", async () => {
 });
 
 fastify.register(auth);
-
-fastify.register(autoload, {
-  dir: `${__dirname}/routes`,
-  logLevel: "info",
-});
+fastify.register(login);
+fastify.register(me);
+fastify.register(notifications);
+fastify.register(phishing);
+fastify.register(signup);
 
 export default fastify;
