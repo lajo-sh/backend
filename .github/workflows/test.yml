@@ -18,10 +18,7 @@ jobs:
           node-version: "18"
 
       - name: Install dependencies
-        run: pnpm i
-
-      - name: Approve builds
-        run: pnpm approve-builds
+        run: pnpm i --allow-build=bcrypt
 
       - name: Run unit tests
         run: pnpm test
