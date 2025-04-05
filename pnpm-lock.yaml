@@ -25,10 +25,10 @@ importers:
         version: 9.4.2
       '@scalar/fastify-api-reference':
         specifier: ^1.25.124
-        version: 1.25.124(@hyperjump/browser@1.2.0)(axios@1.7.9)(tailwindcss@4.0.9)(typescript@5.7.3)
+        version: 1.25.124(@hyperjump/browser@1.2.0)(axios@1.8.2)(tailwindcss@4.0.9)(typescript@5.7.3)
       axios:
-        specifier: ^1.7.9
-        version: 1.7.9
+        specifier: ^1.8.2
+        version: 1.8.2
       bcrypt:
         specifier: ^5.1.1
         version: 5.1.1
@@ -1540,8 +1540,8 @@ packages:
   avvio@9.1.0:
     resolution: {integrity: sha512-fYASnYi600CsH/j9EQov7lECAniYiBFiiAtBNuZYLA2leLe9qOvZzqYHFjtIj6gD2VMoMLP14834LFWvr4IfDw==}
 
-  axios@1.7.9:
-    resolution: {integrity: sha512-LhLcE7Hbiryz8oMDdDptSrWowmB4Bl6RCt6sIJKpRB4XtVf0iEgewX3au/pJqm+Py1kCASkb/FFKjxQaLtxJvw==}
+  axios@1.8.2:
+    resolution: {integrity: sha512-ls4GYBm5aig9vWx8AWDSGLpnpDQRtWAfrjU+EuytuODrFBkqesN2RkOQCBzrA1RQNHw1SmRMSDDDSwzNAYQ6Rg==}
 
   bail@2.0.2:
     resolution: {integrity: sha512-0xO6mYd7JB2YesxDKplafRpsiOzPt9V02ddPCLbY1xYGPOX24NTyN50qnUxgCPcSoYMhKpAuBTjQoRZCAkUDRw==}
@@ -4207,7 +4207,7 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.34.8':
     optional: true
 
-  '@scalar/api-client@2.2.53(@hyperjump/browser@1.2.0)(axios@1.7.9)(tailwindcss@4.0.9)(typescript@5.7.3)':
+  '@scalar/api-client@2.2.53(@hyperjump/browser@1.2.0)(axios@1.8.2)(tailwindcss@4.0.9)(typescript@5.7.3)':
     dependencies:
       '@headlessui/tailwindcss': 0.2.2(tailwindcss@4.0.9)
       '@headlessui/vue': 1.7.23(vue@3.5.13(typescript@5.7.3))
@@ -4228,7 +4228,7 @@ snapshots:
       '@scalar/use-toasts': 0.7.9(typescript@5.7.3)
       '@scalar/use-tooltip': 1.0.6(typescript@5.7.3)
       '@vueuse/core': 10.11.1(vue@3.5.13(typescript@5.7.3))
-      '@vueuse/integrations': 11.3.0(axios@1.7.9)(focus-trap@7.6.4)(fuse.js@7.1.0)(vue@3.5.13(typescript@5.7.3))
+      '@vueuse/integrations': 11.3.0(axios@1.8.2)(focus-trap@7.6.4)(fuse.js@7.1.0)(vue@3.5.13(typescript@5.7.3))
       focus-trap: 7.6.4
       fuse.js: 7.1.0
       microdiff: 1.5.0
@@ -4258,11 +4258,11 @@ snapshots:
       - typescript
       - universal-cookie
 
-  '@scalar/api-reference@1.25.124(@hyperjump/browser@1.2.0)(axios@1.7.9)(tailwindcss@4.0.9)(typescript@5.7.3)':
+  '@scalar/api-reference@1.25.124(@hyperjump/browser@1.2.0)(axios@1.8.2)(tailwindcss@4.0.9)(typescript@5.7.3)':
     dependencies:
       '@floating-ui/vue': 1.1.6(vue@3.5.13(typescript@5.7.3))
       '@headlessui/vue': 1.7.23(vue@3.5.13(typescript@5.7.3))
-      '@scalar/api-client': 2.2.53(@hyperjump/browser@1.2.0)(axios@1.7.9)(tailwindcss@4.0.9)(typescript@5.7.3)
+      '@scalar/api-client': 2.2.53(@hyperjump/browser@1.2.0)(axios@1.8.2)(tailwindcss@4.0.9)(typescript@5.7.3)
       '@scalar/code-highlight': 0.0.23
       '@scalar/components': 0.13.27(typescript@5.7.3)
       '@scalar/oas-utils': 0.2.109(@hyperjump/browser@1.2.0)
@@ -4345,9 +4345,9 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
-  '@scalar/fastify-api-reference@1.25.124(@hyperjump/browser@1.2.0)(axios@1.7.9)(tailwindcss@4.0.9)(typescript@5.7.3)':
+  '@scalar/fastify-api-reference@1.25.124(@hyperjump/browser@1.2.0)(axios@1.8.2)(tailwindcss@4.0.9)(typescript@5.7.3)':
     dependencies:
-      '@scalar/api-reference': 1.25.124(@hyperjump/browser@1.2.0)(axios@1.7.9)(tailwindcss@4.0.9)(typescript@5.7.3)
+      '@scalar/api-reference': 1.25.124(@hyperjump/browser@1.2.0)(axios@1.8.2)(tailwindcss@4.0.9)(typescript@5.7.3)
       '@scalar/types': 0.0.36
       fastify-plugin: 4.5.1
     transitivePeerDependencies:
@@ -4712,13 +4712,13 @@ snapshots:
       - '@vue/composition-api'
       - vue
 
-  '@vueuse/integrations@11.3.0(axios@1.7.9)(focus-trap@7.6.4)(fuse.js@7.1.0)(vue@3.5.13(typescript@5.7.3))':
+  '@vueuse/integrations@11.3.0(axios@1.8.2)(focus-trap@7.6.4)(fuse.js@7.1.0)(vue@3.5.13(typescript@5.7.3))':
     dependencies:
       '@vueuse/core': 11.3.0(vue@3.5.13(typescript@5.7.3))
       '@vueuse/shared': 11.3.0(vue@3.5.13(typescript@5.7.3))
       vue-demi: 0.14.10(vue@3.5.13(typescript@5.7.3))
     optionalDependencies:
-      axios: 1.7.9
+      axios: 1.8.2
       focus-trap: 7.6.4
       fuse.js: 7.1.0
     transitivePeerDependencies:
@@ -4819,7 +4819,7 @@ snapshots:
       '@fastify/error': 4.0.0
       fastq: 1.19.0
 
-  axios@1.7.9:
+  axios@1.8.2:
     dependencies:
       follow-redirects: 1.15.9
       form-data: 4.0.2
